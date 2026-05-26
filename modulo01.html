@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Módulo 01</title>
+
+<script src="https://cdn.jsdelivr.net/npm/p5@1.11.13/lib/p5.min.js"></script>
+<script src="https://unpkg.com/ml5@1/dist/ml5.min.js"></script>
+
+<link rel="stylesheet" href="css/modulo01.css">
+</head>
+
+<body>
+
+<h2>Detección de imagen</h2>
+<p class="subtitle">Selecciona una imagen</p>
+
+<div id="catalogo">
+
+<img class="thumb" src="image/perro.jpg" onclick="detectar(this)">
+<img class="thumb" src="image/gato.jpg" onclick="detectar(this)">
+<img class="thumb" src="image/leon.jpg" onclick="detectar(this)">
+<img class="thumb" src="image/tigre.jpg" onclick="detectar(this)">
+<img class="thumb" src="image/conejo.jpg" onclick="detectar(this)">
+<img class="thumb" src="image/pikachu.jpg" onclick="detectar(this)">
+
+</div>
+
+<div id="resultado-wrap">
+
+<div id="canvas-wrap">
+<div id="signo">?</div>
+</div>
+
+<div id="info-panel">
+
+<h3>Resultado</h3>
+
+<p id="texto">Esperando imagen...</p>
+
+<div class="bar-wrap">
+<div class="bar-fill" id="barra"></div>
+</div>
+
+<p id="porcentaje">0%</p>
+
+</div>
+
+</div>
+
+<script>
+
+let classifier;
+let img;
+
+function preload(){
+    classifier = ml5.imageClassifier('MobileNet');
+}
+
+function setup(){
+    let canvas = createCanvas(400,400);
+    canvas.parent('canvas-wrap');
+    background(220);
+}
+
+function detectar(elemento){
+
+    document.querySelectorAll('.thumb')
+    .forEach(img => img.classList.remove('activa'));
+
+    elemento.classList.add('activa');
+
+    document.getElementById('texto').innerText = 'Analizando...';
+
+    img = loadImage(elemento.src, ()=>{
+
+        clear();
+        image(img,0,0,width,height);
+
+        classifier.classify(img,(resultados)=>{
+
+            let nombre = resultados[0].label;
+            let confianza = (resultados[0].confidence * 100).toFixed(1);
+
+            document.getElementById('texto').innerText = nombre;
+            document.getElementById('porcentaje').innerText = confianza + '%';
+
+            let barra = document.getElementById('barra');
+            barra.style.width = confianza + '%';
+
+            if(confianza >= 50){
+                barra.style.background = 'green';
+                document.getElementById('signo').style.display = 'none';
+            }else{
+                barra.style.background = 'red';
+                document.getElementById('signo').style.display = 'flex';
+            }
+
+        });
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>
