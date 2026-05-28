@@ -89,3 +89,53 @@ iframe{
     background:white;
 }
 
+#inicio {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  padding: 10px 0;
+}
+
+#frame {
+  display: none;
+  flex: 1;
+  width: 100%;
+  border: none;
+  border-radius: 15px;
+  background: white;
+}
+
+.card {
+  background: #1e1e2e;
+  border: 1px solid #313244;
+  border-radius: 14px;
+  padding: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.card:hover {
+  background: #313244;
+  transform: translateY(-4px);
+  border-color: #cba6f7;
+}
+
+.card i {
+  font-size: 28px;
+  color: #cba6f7;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.card h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 6px;
+}
+
+.card p {
+  font-size: 12px;
+  color: #aaa;
+  line-height: 1.5;
+}
