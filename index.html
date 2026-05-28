@@ -1,74 +1,85 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trabajo Final IA</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trabajo Final IA</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-<link rel="stylesheet" href="css/style.css">
-
-</head>
-
-<body>
-
-<aside>
-
-    <div class="logo">
+  <body>
+    <aside>
+      <div class="logo">
         <h2><i class="ti ti-brain"></i> Trabajo IA</h2>
         <p>ML5 · IA · Visión Artificial</p>
-    </div>
+      </div>
 
-    <div class="menu">
-
-        <button onclick="abrir('modulo01.html','Detección de imagen')">
-            <i class="ti ti-photo"></i>
-            Detección de imagen
+      <div class="menu">
+        <button onclick="abrir('modulo01.html', 'Detección de imagen')">
+          <i class="ti ti-photo"></i> Detección de imagen
         </button>
-
-        <button onclick="abrir('modulo02.html','Trazado de línea')">
-            <i class="ti ti-hand-finger"></i>
-            Trazado de línea
+        <button onclick="abrir('modulo02.html', 'Trazado de línea')">
+          <i class="ti ti-hand-finger"></i> Trazado de línea
         </button>
-
-        <button onclick="abrir('modulo03.html','Detección facial')">
-            <i class="ti ti-face-id"></i>
-            Detección facial
+        <button onclick="abrir('modulo03.html', 'Detección facial')">
+          <i class="ti ti-face-id"></i> Detección facial
         </button>
-
-        <button onclick="abrir('modulo04.html','Teachable Machine')">
-            <i class="ti ti-cpu"></i>
-            Teachable Machine
+        <button onclick="abrir('modulo04.html', 'Teachable Machine')">
+          <i class="ti ti-cpu"></i> Teachable Machine
         </button>
-
-        <button onclick="abrir('modulo05.html','Alerta de persona')">
-            <i class="ti ti-alert-triangle"></i>
-            Alerta de persona
+        <button onclick="abrir('modulo05.html', 'Alerta de persona')">
+          <i class="ti ti-alert-triangle"></i> Alerta de persona
         </button>
+      </div>
+    </aside>
 
-    </div>
-
-</aside>
-
-<main>
-
-    <div class="top">
+    <main>
+      <div class="top">
         <h1 id="titulo">Trabajo Final IA</h1>
-        <p>Selecciona un módulo</p>
-    </div>
+        <p id="subtitulo">Selecciona un módulo</p>
+      </div>
 
-    <iframe id="frame"></iframe>
+      <div id="inicio">
+        <div class="card" onclick="abrir('modulo01.html', 'Detección de imagen')">
+          <i class="ti ti-photo"></i>
+          <h3>Detección de imagen</h3>
+          <p>Identifica objetos en imágenes usando el modelo MobileNet de ML5.</p>
+        </div>
+        <div class="card" onclick="abrir('modulo02.html', 'Trazado de línea')">
+          <i class="ti ti-hand-finger"></i>
+          <h3>Trazado de línea</h3>
+          <p>Traza una línea entre los dedos índices de ambas manos en tiempo real.</p>
+        </div>
+        <div class="card" onclick="abrir('modulo03.html', 'Detección facial')">
+          <i class="ti ti-face-id"></i>
+          <h3>Detección facial</h3>
+          <p>Detecta partes del rostro como ojos, nariz, cejas y boca con FaceMesh.</p>
+        </div>
+        <div class="card" onclick="abrir('modulo04.html', 'Teachable Machine')">
+          <i class="ti ti-cpu"></i>
+          <h3>Teachable Machine</h3>
+          <p>Clasifica imágenes en tiempo real usando un modelo entrenado en Teachable Machine.</p>
+        </div>
+        <div class="card" onclick="abrir('modulo05.html', 'Alerta de persona')">
+          <i class="ti ti-alert-triangle"></i>
+          <h3>Alerta de persona</h3>
+          <p>Emite una alarma cuando detecta una persona presente por más de 5 segundos.</p>
+        </div>
+      </div>
 
-</main>
+      <iframe id="frame"></iframe>
+    </main>
 
-<script>
+    <script>
+      function abrir(pagina, titulo) {
+        document.getElementById("frame").src = pagina;
+        document.getElementById("titulo").innerText = titulo;
+        document.getElementById("subtitulo").innerText = "Desarrollado por Sandro Pachas Romani";
 
-function abrir(pagina,titulo){
-    document.getElementById("frame").src = pagina;
-    document.getElementById("titulo").innerText = titulo;
-}
-
-</script>
-
-</body>
+        document.getElementById("inicio").style.display = "none";
+        document.getElementById("frame").style.display = "block";
+      }
+    </script>
+  </body>
 </html>
