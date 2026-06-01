@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Alerta de Persona</title>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.13/lib/p5.min.js"></script>
+    <script src="https://unpkg.com/ml5@0.12.2/dist/ml5.min.js"></script>
+    <link rel="stylesheet" href="css/modulo05.css" />
+  </head>
+  <body>
+    <h2>Alerta de persona</h2>
+    <p id="estado">Esperando...</p>
+    <input type="range" id="barra" min="0" max="5" step="0.1" value="0" disabled />
+    <audio id="alarma" src="audio/alarma.mp3" loop></audio>
+
+    <script>
+      let detector, video, detecciones = [];
+      let personaDetectada = false, tiempoInicio = 0, alarmaActivada = false;
+
+      let detectando = false;
+
+      function preload() {
+        detector = ml5.objectDetector("cocossd");
+      }
+
+      function setup() {
+        createCanvas(640, 480);
+        video = createCapture(VIDEO);
+        video.size(640, 480);
+        video.hide();
+      }
+
+      function draw() {
+        image(video, 0, 0, width, height);
+
+        if (!detectando) {
+          detectando = true;
+          detector.detect(video, (err, res) => {
+            detecciones = res || [];
+            detectando = false;
+          });
+        }
+
+        let hayPersona = detecciones.some(obj => obj.label === "person");
+
+        for (let obj of detecciones) {
+          stroke(obj.label === "person" ? color(255, 0, 0) : color(100));
+          strokeWeight(obj.label === "person" ? 3 : 1);
+          noFill();
+          rect(obj.x, obj.y, obj.width, obj.height);
+        }
+
+        if (hayPersona) {
+          if (!personaDetectada) {
+            personaDetectada = true;
+            tiempoInicio = millis();
+          }
+          let seg = min((millis() - tiempoInicio) / 1000, 5);
+          document.getElementById("barra").value = seg;
+          document.getElementById("estado").innerText = "⚠️ Persona: " + seg.toFixed(1) + "s";
+          if (seg >= 5 && !alarmaActivada) {
+            alarmaActivada = true;
+            document.getElementById("alarma").play();
+            document.getElementById("estado").innerText = "🚨 ALARMA";
+          }
+        } else {
+          personaDetectada = false;
+          alarmaActivada = false;
+          document.getElementById("barra").value = 0;
+          document.getElementById("estado").innerText = "Esperando...";
+          document.getElementById("alarma").pause();
+          document.getElementById("alarma").currentTime = 0;
+        }
+      }
+    </script>
+  </body>
+</html>
