@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teachable Machine</title>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.13/lib/p5.min.js"></script>
+    <script src="https://unpkg.com/ml5@1/dist/ml5.min.js"></script>
+    <link rel="stylesheet" href="css/modulo04.css" />
+  </head>
+  <body>
+    <h2>Teachable Machine</h2>
+    <p class="subtitle">Detección en tiempo real</p>
+
+    <div id="canvas-container"></div>
+
+    <div id="panel">
+      <p id="etiqueta">Apunta la cámara a un objeto...</p>
+      <div id="barra-wrap">
+        <div id="barra-fill"></div>
+      </div>
+      <p id="porcentaje">0%</p>
+    </div>
+
+    <script>
+      const URL_MODELO = "model/";
+
+      let classifier;
+      let video;
+      let ultimaEtiqueta = "";
+      let ultimoTiempo = 0;
+
+      function preload() {
+        classifier = ml5.imageClassifier(URL_MODELO + "metadata.json");
+      }
+
+      function setup() {
+        let canvas = createCanvas(640, 480);
+        canvas.parent("canvas-container");
+
+        video = createCapture(VIDEO);
+        video.size(640, 480);
+        video.hide();
+
+        classifier.classifyStart(video, gotResultados);
+      }
+
+      function gotResultados(resultados) {
+        console.log(resultados); // ver todos los resultados
+
+        let mejor = resultados[0];
+        let confianza = mejor.confidence * 100;
+
+        if (confianza >= 50) {
+          document.getElementById("etiqueta").innerText = mejor.label;
+          document.getElementById("porcentaje").innerText =
+            confianza.toFixed(1) + "%";
+          document.getElementById("barra-fill").style.width = confianza + "%";
+
+          if (
+            mejor.label !== ultimaEtiqueta &&
+            millis() - ultimoTiempo > 3000
+          ) {
+            ultimaEtiqueta = mejor.label;
+            ultimoTiempo = millis();
+            hablar(mejor.label);
+          }
+        } else {
+          document.getElementById("etiqueta").innerText = "Sin detección";
+          document.getElementById("porcentaje").innerText = "0%";
+          document.getElementById("barra-fill").style.width = "0%";
+          ultimaEtiqueta = "";
+        }
+      }
+
+      function hablar(texto) {
+        speechSynthesis.cancel();
+        let voz = new SpeechSynthesisUtterance(texto);
+
+        let voces = speechSynthesis.getVoices();
+
+        if (voces.length === 0) {
+          speechSynthesis.onvoiceschanged = () => {
+            voces = speechSynthesis.getVoices();
+            let vozEspanol = voces.find((v) => v.lang.startsWith("es"));
+            if (vozEspanol) voz.voice = vozEspanol;
+            voz.rate = 1;
+            speechSynthesis.speak(voz);
+          };
+        } else {
+          let vozEspanol = voces.find((v) => v.lang.startsWith("es"));
+          if (vozEspanol) voz.voice = vozEspanol;
+          voz.rate = 1;
+          speechSynthesis.speak(voz);
+        }
+      }
+
+      function draw() {
+        image(video, 0, 0, width, height);
+      }
+    </script>
+  </body>
+</html>
