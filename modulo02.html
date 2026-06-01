@@ -17,6 +17,10 @@
       let handPose;
       let hands = [];
 
+      function preload() {
+        handPose = ml5.handPose();
+      }
+
       function setup() {
         createCanvas(640, 480);
 
@@ -24,11 +28,6 @@
         video.size(640, 480);
         video.hide();
 
-        handPose = ml5.handPose(modelLoaded);
-      }
-
-      function modelLoaded() {
-        console.log("Modelo cargado");
         handPose.detectStart(video, gotHands);
       }
 
@@ -49,9 +48,9 @@
           grosor = constrain(grosor, 2, 20);
 
           if (distancia < 80) {
-            stroke(255, 0, 0); 
+            stroke(255, 0, 0);
           } else {
-            stroke(0, 255, 0); 
+            stroke(0, 255, 0);
           }
 
           strokeWeight(grosor);
