@@ -1,7 +1,7 @@
 # 🧠 Trabajo Final IA — Visión Artificial con ML5.js
 
 Proyecto final del curso de Inteligencia Artificial y Machine Learning.  
-Aplicación web con **5 módulos de visión artificial** integrados en un dashboard tipo iframe, desarrollada con **ML5.js**, **p5.js** y **TensorFlow.js**.
+Aplicación web con **5 módulos de visión artificial** integrados en un dashboard tipo iframe, desarrollada con **ML5.js**, **p5.js**.
 
 ---
 
@@ -31,7 +31,6 @@ Abrir index.html en el navegador → seleccionar un módulo desde el menú later
 
 - [ML5.js](https://ml5js.org/) — MobileNet, HandPose, FaceMesh, ObjectDetector (COCO-SSD)
 - [p5.js](https://p5js.org/) — canvas y captura de video
-- [TensorFlow.js](https://www.tensorflow.org/js) — motor de inferencia
 - [Teachable Machine](https://teachablemachine.withgoogle.com/) — modelo personalizado (Plumón, Control remoto, Billetera, Botella)
 - HTML5 / CSS3 — interfaz y estilos
 - Web Speech API — síntesis de voz en módulo 04
